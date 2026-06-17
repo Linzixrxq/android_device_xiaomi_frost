@@ -1,0 +1,19 @@
+name: Build TWRP
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build
+        run: |
+          echo "Здесь будут команды для сборки"
+          # Сейчас сервер просто проверит, что твой репозиторий доступен
+          ls -R
+
