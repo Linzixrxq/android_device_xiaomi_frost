@@ -31,6 +31,10 @@ jobs:
         run: |
           mkdir -p workspace/device/xiaomi/frost
           find . -maxdepth 1 -not -name 'workspace' -not -name '.' -not -name '.git' -not -name 'device' -exec cp -r {} workspace/device/xiaomi/frost/ \;
+          # Явно добавляем файл vendorsetup.sh, если он есть, чтобы система увидела твой lunch
+          cd workspace
+          source build/envsetup.sh
+          lunch twrp_frost-eng
 
       - name: Build
         run: |
