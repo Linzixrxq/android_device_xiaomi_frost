@@ -30,7 +30,7 @@ jobs:
       - name: Set up Device Tree
         run: |
           mkdir -p workspace/device/xiaomi/frost
-          find . -maxdepth 1 -not -name 'workspace' -not -name '.' -not -name '.git' -exec cp -r {} workspace/device/xiaomi/frost/ \;
+          find . -maxdepth 1 -not -name 'workspace' -not -name '.' -not -name '.git' -not -name 'device' -exec cp -r {} workspace/device/xiaomi/frost/ \;
 
       - name: Build
         run: |
@@ -38,4 +38,3 @@ jobs:
           source build/envsetup.sh
           lunch twrp_frost-eng
           mka recoveryimage
-
