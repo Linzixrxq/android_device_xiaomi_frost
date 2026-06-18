@@ -13,9 +13,6 @@ jobs:
 
       - name: Setup and Initialize
         run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /opt/ghc
           sudo apt update
           sudo apt install -y git-core gnupg flex bison build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc unzip bc
           mkdir -p ~/bin
@@ -26,15 +23,15 @@ jobs:
           cd workspace
           repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
           repo sync -j$(nproc)
-
-      - name: Set up Device Tree
-        run: |
-          mkdir -p workspace/device/xiaomi/frost
-          find . -maxdepth 1 -not -name 'workspace' -not -name '.' -not -name '.git' -not -name 'device' -exec cp -r {} workspace/device/xiaomi/frost/ \;
-          # Явно добавляем файл vendorsetup.sh, если он есть, чтобы система увидела твой lunch
-          cd workspace
-          source build/envsetup.sh
-          lunch twrp_frost-eng
+          
+          # Переносим дерево устройства СРАЗУ ПОСЛЕ repo sync, пока мы в workspace
+          mkdir -p device/xiaomi/frost
+          # Копируем всё из корня репозитория (который сейчас в $GITHUB_WORKSPACE) в workspace/device/xiaomi/frost
+          cp -r $GITHUB_WORKSPACE/* device/xiaomi/frost/
+          # Удаляем лишние папки, чтобы не было дублей
+          rm -rf device/xiaomi/frost/workspace
+          rm -rf device/xiaomi/frost/.git
+          rm -rf device/xiaomi/frost/.github
 
       - name: Build
         run: |
