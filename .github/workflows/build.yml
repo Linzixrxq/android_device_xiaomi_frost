@@ -22,8 +22,10 @@ jobs:
           export PATH=~/bin:$PATH
           mkdir workspace
           cd workspace
-          repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
-          repo sync -j$(nproc) --depth=1
+          # Переносим --depth=1 сюда, так как это правильный способ инициализации для экономии места
+          repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 --depth=1
+          repo sync -j$(nproc)
+          
           mkdir -p device/xiaomi/frost
           cp -r $GITHUB_WORKSPACE/* device/xiaomi/frost/
           rm -rf device/xiaomi/frost/workspace
