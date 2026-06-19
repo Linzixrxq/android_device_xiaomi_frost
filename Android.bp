@@ -1,3 +1,4 @@
+
 //
 // Copyright (C) 2023 The Android Open Source Project
 //
@@ -7,6 +8,7 @@ soong_namespace { }
 
 cc_library {
     name: "bootctrl.jr510",
+    visibility: ["//visibility:public"],
     defaults: ["bootctrl_hal_defaults"],
     static_libs: [
         "libgptutils.frost",
