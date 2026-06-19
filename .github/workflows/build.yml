@@ -30,14 +30,9 @@ jobs:
           repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 --depth=1
           repo sync -j$(nproc)
           
-          # Безопасное копирование
+          # Копирование файлов устройства из корня репозитория
           mkdir -p device/xiaomi/frost
-          if [ -d "$GITHUB_WORKSPACE/device/xiaomi/frost" ]; then
-            cp -r $GITHUB_WORKSPACE/device/xiaomi/frost/* device/xiaomi/frost/
-          else
-            echo "Внимание: папка устройства не найдена по пути $GITHUB_WORKSPACE/device/xiaomi/frost"
-            exit 1
-          fi
+          cp -r $GITHUB_WORKSPACE/* device/xiaomi/frost/
 
       - name: Build
         run: |
