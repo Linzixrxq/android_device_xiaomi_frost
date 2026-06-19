@@ -13,25 +13,18 @@ jobs:
 
       - name: Setup and Initialize
         run: |
-          # Агрессивная очистка места перед установкой пакетов
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost /usr/share/swift /usr/lib/llvm-* /usr/local/lib/node_modules
           df -h
-          
           sudo apt-get update
           sudo apt-get install -y git-core gnupg flex bison build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc unzip bc rsync
-          
           mkdir -p ~/bin
           curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
           chmod a+x ~/bin/repo
           export PATH=~/bin:$PATH
-          
           mkdir workspace
           cd workspace
           repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 --depth=1
-          # Оптимизированная синхронизация для экономии места
           repo sync -c -q --no-tags --no-clone-bundle -j$(nproc)
-          
-          # Копирование файлов устройства
           mkdir -p device/xiaomi/frost
           cd ..
           rsync -av --exclude='workspace' --exclude='.git' --exclude='.github' ./ workspace/device/xiaomi/frost/
@@ -43,3 +36,10 @@ jobs:
           source build/envsetup.sh
           lunch twrp_frost-eng
           mka recoveryimage -j$(nproc)
+
+      # Добавляем этот шаг для сохранения файла
+      - name: Upload Recovery
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovery-image
+          path: workspace/out/target/product/frost/recovery.img
