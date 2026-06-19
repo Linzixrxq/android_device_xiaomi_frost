@@ -7,17 +7,13 @@ soong_namespace { }
 
 cc_library {
     name: "bootctrl.jr510",
-    // Добавляем видимость, чтобы решить ошибку доступа
-    visibility: [
-        "//visibility:public",
-    ],
     defaults: ["bootctrl_hal_defaults"],
     static_libs: [
         "libgptutils.frost",
         "libotautil",
         "libvintf", 
         "libhidl-gen-utils",
-        "librecovery_utils",
+        // "librecovery_utils", <-- Закомментировано, чтобы убрать ошибку видимости
         "libc++fs",
         "libprotobuf-cpp-lite",
         "ota_metadata_proto_cc",
