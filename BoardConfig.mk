@@ -19,10 +19,9 @@ AB_OTA_PARTITIONS += \
     vendor
 
 # Конфигурация Vendor Boot (Poco C40 / frost)
+BOARD_BUILD_VENDOR_BOOT_IMAGE := true
 BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
 BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
-BOARD_BUILD_VENDOR_BOOT_IMAGE := true
-BUILDING_VENDOR_BOOT_IMAGE := true
 BOARD_USES_RECOVERY_AS_BOOT := false
 
 # Архитектура (ARM64 / Cortex-A55)
@@ -49,11 +48,9 @@ TARGET_BOARD_PLATFORM := jr510
 TARGET_SCREEN_DENSITY := 320
 
 # Использование предкомпилированного ядра (Prebuilt Kernel)
-BOARD_BOOTIMG_HEADER_VERSION := 3
-BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
+BOARD_BOOT_HEADER_VERSION := 3
+BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_KERNEL_IMAGE_NAME := Image
-# TARGET_KERNEL_SOURCE закомментирован, так как используем готовое ядро из prebuilt
-# TARGET_KERNEL_SOURCE := kernel/xiaomi/frost
 
 TARGET_FORCE_PREBUILT_KERNEL := true
 ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
