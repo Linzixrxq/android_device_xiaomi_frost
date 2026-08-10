@@ -1,6 +1,24 @@
-/external_sd    vfat    /dev/block/mmcblk1p1    /dev/block/mmcblk1  flags=display="MicroSD";storage;wipeui;removable
-/usb_otg        vfat    /dev/block/sda1         /dev/block/sda      flags=display="USB OTG";storage;wipeui;removable
-/boot           emmc    /dev/block/by-name/boot             flags=display="Boot";backup=1;flashimg=1
-/vendor_boot    emmc    /dev/block/by-name/vendor_boot      flags=display="Vendor Boot";backup=1;flashimg=1
-/vbmeta         emmc    /dev/block/by-name/vbmeta           flags=display="VBMeta";backup=1;flashimg=1
-/data           f2fs    /dev/block/by-name/userdata         flags=display="Data"
+# mount point       fstype      device                                    flags
+/system             ext4        system                                    flags=display="System";logical;slotselect
+/system_ext         ext4        system_ext                                flags=display="System EXT";logical;slotselect
+/product            ext4        product                                   flags=display="Product";logical;slotselect
+/vendor             ext4        vendor                                    flags=display="Vendor";logical;slotselect
+
+/boot               emmc        /dev/block/by-name/boot                   flags=display="Boot";backup=1;flashimg=1
+/vendor_boot        emmc        /dev/block/by-name/vendor_boot            flags=display="Vendor Boot";backup=1;flashimg=1
+/vbmeta             emmc        /dev/block/by-name/vbmeta                 flags=display="VBMeta";backup=1;flashimg=1
+
+/metadata           ext4        /dev/block/by-name/metadata               flags=display="Metadata"
+/persist            ext4        /dev/block/by-name/persist                flags=display="Persist";backup=1
+/data               f2fs        /dev/block/by-name/userdata               flags=display="Userdata";backup=1;wipeingui;encryptable=footer
+/misc               emmc        /dev/block/by-name/misc                   flags=display="Misc"
+/cust               ext4        /dev/block/by-name/cust                   flags=display="Cust";backup=1
+
+# Внешние накопители
+/external_sd        vfat        /dev/block/mmcblk1p1 /dev/block/mmcblk1   flags=display="MicroSD";storage;wipeingui;removable
+/usb_otg            vfat        /dev/block/sda1 /dev/block/sda            flags=display="USB OTG";storage;wipeingui;removable
+
+# Прошивки и модем
+/firmware           vfat        /dev/block/by-name/modem                  flags=display="Firmware";mounttodecrypt;slotselect
+/dsp                vfat        /dev/block/by-name/dsp                    flags=display="DSP";slotselect
+/bt_firmware        vfat        /dev/block/bootdevice/by-name/bluetooth   flags=display="Bluetooth";slotselect
