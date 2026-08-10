@@ -37,9 +37,12 @@ jobs:
           lunch twrp_frost-eng
           mka recoveryimage -j$(nproc)
 
-      # Добавляем этот шаг для сохранения файла
-      - name: Upload Recovery
+      # Сохраняем собранные образы (vendor_boot и boot)
+      - name: Upload Recovery Images
         uses: actions/upload-artifact@v4
         with:
-          name: recovery-image
-          path: workspace/out/target/product/frost/recovery.img
+          name: TWRP-Poco-C40
+          path: |
+            workspace/out/target/product/frost/vendor_boot.img
+            workspace/out/target/product/frost/boot.img
+          if-no-files-found: warn
