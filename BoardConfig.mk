@@ -6,10 +6,10 @@
 
 DEVICE_PATH := device/xiaomi/frost
 
-# For building with minimal manifest
+# Для сборки с минимальным манифестом
 ALLOW_MISSING_DEPENDENCIES := true
 
-# A/B
+# A/B Разметка
 AB_OTA_UPDATER := true
 AB_OTA_PARTITIONS += \
     system \
@@ -18,14 +18,14 @@ AB_OTA_PARTITIONS += \
     product \
     vendor
 
-# Config for Vendor Boot (Fixed for Poco C40)
+# Конфигурация Vendor Boot (Poco C40 / frost)
 BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
 BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
 BOARD_BUILD_VENDOR_BOOT_IMAGE := true
 BUILDING_VENDOR_BOOT_IMAGE := true
 BOARD_USES_RECOVERY_AS_BOOT := false
 
-# Architecture
+# Архитектура (ARM64 / Cortex-A55)
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
@@ -40,27 +40,27 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
 TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a55
 
-# Bootloader
+# Загрузчик и Платформа
 TARGET_BOOTLOADER_BOARD_NAME := frost
 TARGET_NO_BOOTLOADER := true
+TARGET_BOARD_PLATFORM := jr510
 
-# Display
+# Дисплей
 TARGET_SCREEN_DENSITY := 320
 
-# Kernel
+# Использование предкомпилированного ядра (Prebuilt Kernel)
 BOARD_BOOTIMG_HEADER_VERSION := 3
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
 BOARD_KERNEL_IMAGE_NAME := Image
-TARGET_KERNEL_CONFIG := frost_defconfig
-TARGET_KERNEL_SOURCE := kernel/xiaomi/frost
+# TARGET_KERNEL_SOURCE закомментирован, так как используем готовое ядро из prebuilt
+# TARGET_KERNEL_SOURCE := kernel/xiaomi/frost
 
-# Kernel - prebuilt
 TARGET_FORCE_PREBUILT_KERNEL := true
 ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 endif
 
-# Partitions
+# Размеры партиций
 BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 100663296
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 100663296
@@ -74,15 +74,12 @@ BOARD_SUPER_PARTITION_GROUPS := xiaomi_dynamic_partitions
 BOARD_XIAOMI_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor
 BOARD_XIAOMI_DYNAMIC_PARTITIONS_SIZE := 9122611200
 
-# Platform
-TARGET_BOARD_PLATFORM := jr510
-
-# Recovery
+# Рекавери и файловые системы
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
-# Security patch level (Fake for build)
+# Обход проверок даты безопасности
 PLATFORM_SECURITY_PATCH := 2099-12-31
 VENDOR_SECURITY_PATCH := 2099-12-31
 PLATFORM_VERSION := 16.1.0
@@ -91,7 +88,7 @@ PLATFORM_VERSION := 16.1.0
 BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 
-# TWRP Configuration
+# Настройки интерфейса TWRP
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
 TW_SCREEN_BLANK_ON_BOOT := true
@@ -102,7 +99,7 @@ DEVICE_RESOLUTION := 720x1650
 TARGET_SCREEN_HEIGHT := 1650
 TARGET_SCREEN_WIDTH := 720
 
-# Fixes for JLQ JR510 & Mali GPU
+# Фиксы для JLQ JR510 и отключение FBE-шифрования
 TW_TARGET_USES_QCOM_BSP := false
 TW_INCLUDE_CRYPTO := false
 TW_INCLUDE_CRYPTO_FBE := false
