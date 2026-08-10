@@ -1,5 +1,4 @@
-# Наследование от базовой конфигурации AOSP / TWRP для архитектуры ARM64
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64bit.mk)
+# Наследование базовых конфигураций
 $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 
 # Наследование настроек устройства
