@@ -10,21 +10,16 @@ cc_library {
     visibility: ["//visibility:public"],
     defaults: ["bootctrl_hal_defaults"],
     static_libs: [
-        "libgptutils.frost",
+        "libgptutils",
         "libotautil",
         "libvintf", 
         "libhidl-gen-utils",
-        "libc++fs",
-        "libprotobuf-cpp-lite",
-        "ota_metadata_proto_cc",
-        "update_metadata-protos"
+        "libc++fs"
     ],
     shared_libs: [
         "android.hardware.boot@1.0",
         "android.hardware.boot@1.1",
         "android.hardware.boot@1.2",
-        "android.hardware.boot-V1-ndk",
-        "libboot_control_client",
         "libhidlbase",
         "libutils"
     ]
