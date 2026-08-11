@@ -47,9 +47,12 @@ TARGET_BOARD_PLATFORM := jr510
 # Дисплей
 TARGET_SCREEN_DENSITY := 320
 
-# Использование предкомпилированного ядра (Prebuilt Kernel)
+# Использование предкомпилированного ядра и DTB
 BOARD_BOOT_HEADER_VERSION := 4
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
+BOARD_MKBOOTIMG_ARGS += --dtb $(DEVICE_PATH)/dtb
+BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+
 BOARD_KERNEL_IMAGE_NAME := Image
 
 TARGET_FORCE_PREBUILT_KERNEL := true
