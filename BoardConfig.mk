@@ -51,9 +51,13 @@ TARGET_SCREEN_DENSITY := 320
 BOARD_BOOT_HEADER_VERSION := 4
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 
+# Переименовываем DTB при копировании
 BOARD_PREBUILT_DTB := $(DEVICE_PATH)/dtb
 BOARD_MKBOOTIMG_ARGS += --dtb $(BOARD_PREBUILT_DTB)
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+
+# Копируем dtb в dtb.img в выходной папке, чтобы Ninja не выдавал ошибку
+$(shell cp -f $(BOARD_PREBUILT_DTB) out/target/product/frost/dtb.img 2>/dev/null)
 
 BOARD_KERNEL_IMAGE_NAME := Image
 TARGET_FORCE_PREBUILT_KERNEL := true
