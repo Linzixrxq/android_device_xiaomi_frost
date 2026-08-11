@@ -43,6 +43,5 @@ jobs:
         with:
           name: TWRP-Poco-C40
           path: |
-            workspace/out/target/product/frost/vendor_boot.img
-            workspace/out/target/product/frost/boot.img
-          if-no-files-found: warn
+            workspace/out/target/product/frost/*.img
+
