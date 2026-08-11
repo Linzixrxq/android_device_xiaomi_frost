@@ -36,8 +36,6 @@ jobs:
           export ALLOW_MISSING_DEPENDENCIES=true
           source build/envsetup.sh
           lunch twrp_frost-eng
-          make installclean
-          # Используем -j4 или -j2 вместо всех ядер, чтобы не забить OOM-киллер
           make recoveryimage -j$(nproc)
 
       - name: Check Built Images
