@@ -12,31 +12,38 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup and Initialize
+      - name: Free Disk Space & Install Dependencies
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost /usr/share/swift /usr/lib/llvm-* /usr/local/lib/node_modules
-          df -h
           sudo apt-get update
           sudo apt-get install -y git-core gnupg flex bison build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc unzip bc rsync
+          
           mkdir -p ~/bin
           curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
           chmod a+x ~/bin/repo
+
+      - name: Initialize and Sync TWRP Manifest
+        run: |
           export PATH=~/bin:$PATH
           mkdir -p workspace
           cd workspace
           repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 --depth=1
           repo sync -c -q --no-tags --no-clone-bundle -j$(nproc)
-          mkdir -p device/xiaomi/frost
-          cd ..
+
+      - name: Copy Device Tree
+        run: |
+          mkdir -p workspace/device/xiaomi/frost
           rsync -av --exclude='workspace' --exclude='.git' --exclude='.github' ./ workspace/device/xiaomi/frost/
 
-      - name: Build TWRP
+      - name: Build TWRP (Vendor Boot)
         run: |
+          export PATH=~/bin:$PATH
           cd workspace
           export ALLOW_MISSING_DEPENDENCIES=true
           source build/envsetup.sh
           lunch twrp_frost-eng
-          make recoveryimage -j$(nproc)
+          # Собираем vendorbootimage вместо recoveryimage!
+          mka vendorbootimage -j$(nproc)
 
       - name: Check Built Images
         run: |
@@ -46,8 +53,8 @@ jobs:
       - name: Upload Recovery Images
         uses: actions/upload-artifact@v4
         with:
-          name: TWRP-Poco-C40
+          name: TWRP-Poco-C40-vendor_boot
           path: |
-            workspace/out/target/product/frost/*.img
-            workspace/out/target/product/frost/*.elf
-          if-no-files-found: warn
+            workspace/out/target/product/frost/vendor_boot.img
+            workspace/out/target/product/frost/boot.img
+          if-no-files-found: error
