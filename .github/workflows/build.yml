@@ -3,6 +3,7 @@ name: Build TWRP
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -21,7 +22,7 @@ jobs:
           curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
           chmod a+x ~/bin/repo
           export PATH=~/bin:$PATH
-          mkdir workspace
+          mkdir -p workspace
           cd workspace
           repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 --depth=1
           repo sync -c -q --no-tags --no-clone-bundle -j$(nproc)
@@ -29,18 +30,18 @@ jobs:
           cd ..
           rsync -av --exclude='workspace' --exclude='.git' --exclude='.github' ./ workspace/device/xiaomi/frost/
 
-      - name: Build
+      - name: Build TWRP
         run: |
           cd workspace
           export ALLOW_MISSING_DEPENDENCIES=true
           source build/envsetup.sh
           lunch twrp_frost-eng
           make installclean
-          mka recoveryimage -j$(nproc)
+          make recoveryimage -j$(nproc)
 
-      # Сохраняем собранные образы
       - name: Upload Recovery Images
         uses: actions/upload-artifact@v4
         with:
           name: TWRP-Poco-C40
-          path: workspace/out/target/product/frost/*.img
+          path: workspace/out/target/product/frost/recovery.img
+          if-no-files-found: error
