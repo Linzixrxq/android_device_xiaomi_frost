@@ -42,6 +42,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: TWRP-Poco-C40
-          path: |
-            workspace/out/target/product/frost/*.img
-
+          path: workspace/out/target product/**/*.img
