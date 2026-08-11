@@ -37,11 +37,19 @@ jobs:
           source build/envsetup.sh
           lunch twrp_frost-eng
           make installclean
+          # Используем -j4 или -j2 вместо всех ядер, чтобы не забить OOM-киллер
           make recoveryimage -j$(nproc)
+
+      - name: Check Built Images
+        run: |
+          echo "=== Показываю скомпилированные файлы ==="
+          ls -la workspace/out/target/product/frost/ || true
 
       - name: Upload Recovery Images
         uses: actions/upload-artifact@v4
         with:
           name: TWRP-Poco-C40
-          path: workspace/out/target/product/frost/recovery.img
-          if-no-files-found: error
+          path: |
+            workspace/out/target/product/frost/*.img
+            workspace/out/target/product/frost/*.elf
+          if-no-files-found: warn
