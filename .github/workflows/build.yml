@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup and Initialize
         run: |
@@ -35,11 +35,12 @@ jobs:
           export ALLOW_MISSING_DEPENDENCIES=true
           source build/envsetup.sh
           lunch twrp_frost-eng
+          make installclean
           mka recoveryimage -j$(nproc)
 
-      # Сохраняем собранные образы (vendor_boot и boot)
+      # Сохраняем собранные образы
       - name: Upload Recovery Images
         uses: actions/upload-artifact@v4
         with:
           name: TWRP-Poco-C40
-          path: workspace/out/target product/**/*.img
+          path: workspace/out/target/product/frost/*.img
