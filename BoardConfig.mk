@@ -39,7 +39,8 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
 TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a55
 
-# Поддержка 64-битных приложений (убирает ошибку dumpvars)
+# КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ ДЛЯ DUMPVARS:
+TARGET_IS_64_BIT := true
 TARGET_SUPPORTS_32_BIT_APPS := true
 TARGET_SUPPORTS_64_BIT_APPS := true
 
