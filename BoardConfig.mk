@@ -54,7 +54,6 @@ TARGET_BOARD_PLATFORM := jr510
 # Дисплей и заголовок
 TARGET_SCREEN_DENSITY := 320
 BOARD_PAGE_SIZE := 4096
-BOARD_BOOT_HEADER_VERSION := 3
 
 # Предкомпилированные Ядро и DTB
 BOARD_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb
