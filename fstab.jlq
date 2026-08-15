@@ -1,0 +1,18 @@
+# Dynamic Partitions (Logical)
+system                                                 /system            ext4    ro    wait,slotselect,logical,first_stage_mount
+system_ext                                             /system_ext        ext4    ro    wait,slotselect,logical,first_stage_mount
+product                                                /product           ext4    ro    wait,slotselect,logical,first_stage_mount
+vendor                                                 /vendor            ext4    ro    wait,slotselect,logical,first_stage_mount
+
+# Userdata & Metadata
+/dev/block/by-name/metadata                            /metadata          ext4    noatime,nosuid,nodev,discard    wait,check,formattable,first_stage_mount
+/dev/block/by-name/userdata                            /data              f2fs    noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065,fsync_mode=nobarrier,inlinecrypt    latemount,wait,check,formattable,quota,reservedsize=128M,checkpoint=fs,fileencryption=aes-256-xts:aes-256-cts:v2+emmc_optimized,keydirectory=/metadata/vold/metadata_encryption
+
+# Firmware & Persistent
+/dev/block/by-name/persist                             /mnt/vendor/persist ext4   noatime,nosuid,nodev            wait,check
+/dev/block/by-name/modem                               /vendor/firmware_mnt vfat  ro,shortname=lower,uid=1000,gid=1000 wait,slotselect
+/dev/block/by-name/dsp                                 /vendor/dsp_firmware vfat  ro,shortname=lower,uid=1000,gid=1000 wait,slotselect
+
+# External Storage
+/devices/platform/0.soc/34458000.sdhci/mmc_host/*       auto               vfat    defaults                        voldmanaged=sdcard1:auto
+/devices/platform/0.soc/30740000.usb/usb3/*             /storage/usbotg    vfat    defaults                        voldmanaged=usbotg:auto
