@@ -18,11 +18,13 @@ AB_OTA_PARTITIONS += \
     product \
     vendor
 
-# Конфигурация Vendor Boot (Poco C40 / frost)
+# Конфигурация Vendor Boot (Poco C40 / frost / Android 11)
 BOARD_BUILD_VENDOR_BOOT_IMAGE := true
 BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
-BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
 BOARD_USES_RECOVERY_AS_BOOT := false
+
+# Заголовок Android 11
+BOARD_BOOT_HEADER_VERSION := 3
 
 # Архитектура (ARM64 / Cortex-A55)
 TARGET_ARCH := arm64
