@@ -1,5 +1,6 @@
-# Наследование базовых конфигураций
-$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
+# Наследование 64-битной конфигурации AOSP (обязательно для JR510 / ARM64)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 
 # Наследование настроек устройства
 $(call inherit-product, device/xiaomi/frost/device.mk)
