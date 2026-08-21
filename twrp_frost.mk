@@ -14,3 +14,8 @@ PRODUCT_MANUFACTURER := Xiaomi
 
 # Идентификация сборки
 PRODUCT_RELEASE_NAME := frost
+
+# Переопределение системных свойств для корректной идентификации в TWRP
+PRODUCT_BUILD_PROP_OVERRIDES += \
+    TARGET_DEVICE=frost \
+    PRODUCT_NAME=frost
