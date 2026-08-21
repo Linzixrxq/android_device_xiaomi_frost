@@ -3,28 +3,24 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 //
-
 soong_namespace { }
 
-cc_library_shared {
+cc_library {
     name: "bootctrl.jr510",
-    summary_name: "bootctrl.jr510",
-    relative_install_path: "hw",
-    vendor: true,
-    recovery_available: true,
+    visibility: ["//visibility:public"],
     defaults: ["bootctrl_hal_defaults"],
-    header_libs: [
-        "libhardware_headers",
-        "libsystem_headers",
+    static_libs: [
+        "libgptutils",
+        "libotautil",
+        "libvintf", 
+        "libhidl-gen-utils",
+        "libc++fs"
     ],
     shared_libs: [
         "android.hardware.boot@1.0",
         "android.hardware.boot@1.1",
         "android.hardware.boot@1.2",
-        "libgptutils",
         "libhidlbase",
-        "libutils",
-        "libcutils",
-        "liblog",
-    ],
+        "libutils"
+    ]
 }
