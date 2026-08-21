@@ -35,24 +35,24 @@ jobs:
           mkdir -p workspace/device/xiaomi/frost
           rsync -av --exclude='workspace' --exclude='.git' --exclude='.github' ./ workspace/device/xiaomi/frost/
 
-      - name: Build TWRP (Vendor Boot)
+      - name: Build TWRP (Boot Image / Recovery-as-Boot)
         run: |
           export PATH=~/bin:$PATH
           cd workspace
           export ALLOW_MISSING_DEPENDENCIES=true
           source build/envsetup.sh
           lunch twrp_frost-eng
-          # Собираем vendorbootimage вместо recoveryimage!
-          mka vendorbootimage -j$(nproc)
+          # Собираем bootimage, так как recovery вшито в boot
+          mka bootimage -j$(nproc)
 
       - name: Check Built Images
         run: |
           echo "=== Показываю скомпилированные файлы ==="
           ls -la workspace/out/target/product/frost/ || true
 
-      - name: Upload Recovery Images
+      - name: Upload Recovery Image
         uses: actions/upload-artifact@v4
         with:
-          name: TWRP-Poco-C40-vendor_boot
-          path: workspace/out/target/product/frost/vendor_boot.img
+          name: TWRP-Poco-C40-boot
+          path: workspace/out/target/product/frost/boot.img
           if-no-files-found: error
