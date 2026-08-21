@@ -26,9 +26,9 @@ PRODUCT_PRODUCT_PROPERTIES += \
 PRODUCT_PACKAGES += \
     twrp
 
-# Копирование fstab в vendor_ramdisk и DTB в корень сборки
+# Копирование fstab в корень рамдиска для first_stage_mount и DTB в корень сборки
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/fstab.jlq:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_mount.fstab \
+    $(LOCAL_PATH)/fstab.jlq:root/first_stage_mount.fstab \
     $(LOCAL_PATH)/prebuilt/dtb.img:dtb.img
 
 $(call inherit-product, vendor/twrp/config/common.mk)
