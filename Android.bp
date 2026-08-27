@@ -5,22 +5,20 @@
 //
 soong_namespace { }
 
-cc_library {
+cc_library_shared {
     name: "bootctrl.jr510",
     visibility: ["//visibility:public"],
     defaults: ["bootctrl_hal_defaults"],
     static_libs: [
         "libgptutils",
         "libotautil",
-        "libvintf", 
-        "libhidl-gen-utils",
-        "libc++fs"
     ],
     shared_libs: [
         "android.hardware.boot@1.0",
         "android.hardware.boot@1.1",
         "android.hardware.boot@1.2",
         "libhidlbase",
-        "libutils"
-    ]
+        "libutils",
+        "libvintf",
+    ],
 }
