@@ -6,13 +6,11 @@
 
 LOCAL_PATH := device/xiaomi/frost
 
-# Soong namespaces (указываем пути к вендорным модулям JLQ)
+# Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
-    device/xiaomi/frost \
-    hardware/jlq \
-    vendor/jlq/jr510
+    device/xiaomi/frost
 
-# A/B Boot Control HAL (для работы со слотами A и B на Virtual A/B)
+# A/B Boot Control HAL
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-impl \
     android.hardware.boot@1.0-service \
@@ -22,13 +20,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PRODUCT_PROPERTIES += \
     ro.sys.sdcardfs=1
 
-# Включаем сам TWRP и подключаем общий конфиг TeamWin
+# Включаем TWRP
 PRODUCT_PACKAGES += \
     twrp
 
-# Копирование fstab в корень рамдиска для first_stage_mount и DTB в корень сборки
+# Копирование fstab и dtb
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/fstab.jlq:root/first_stage_mount.fstab \
+    $(LOCAL_PATH)/fstab.jlq:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/recovery.fstab \
     $(LOCAL_PATH)/prebuilt/dtb.img:dtb.img
 
 $(call inherit-product, vendor/twrp/config/common.mk)
