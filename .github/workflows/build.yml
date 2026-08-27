@@ -56,3 +56,8 @@ jobs:
           name: TWRP-Poco-C40-boot
           path: workspace/out/target/product/frost/boot.img
           if-no-files-found: error
+
+      - name: Truncate boot.img to 96MB
+        run: |
+          truncate -s 96M out/target/product/frost/boot.img
+
