@@ -50,7 +50,7 @@ TARGET_BOOTLOADER_BOARD_NAME := frost
 TARGET_NO_BOOTLOADER := true
 TARGET_BOARD_PLATFORM := jr510
 
-# Дисплей и заголовок (ИСПРАВЛЕНО НА 2048)
+# Дисплей и заголовок
 TARGET_SCREEN_DENSITY := 320
 BOARD_PAGE_SIZE := 2048
 
@@ -58,10 +58,14 @@ BOARD_PAGE_SIZE := 2048
 BOARD_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
+# Смещения адресов памяти JLQ JR510
 BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_RAMDISK_OFFSET := 0x01000000
 BOARD_KERNEL_TAGS_OFFSET := 0x00000000
 BOARD_DTB_OFFSET := 0x00000000
+
+# Командная строка ядра (КРИТИЧЕСКИ ВАЖНО ДЛЯ ВЫХОДА ИЗ BOOTLOOP)
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 androidboot.hardware=jlq androidboot.selinux=permissive loop.max_part=7
 
 # Использование GZIP для рамдиска JLQ
 BOARD_RAMDISK_USE_LZ4 := false
@@ -98,6 +102,12 @@ TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
+# Включение ADB при старте ядра
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.secure=0
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.allow.mock.location=0
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.debuggable=1
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.sys.usb.config=adb
+
 # Совместимость со стоковой базой Android 11
 PLATFORM_SECURITY_PATCH := 2024-02-01
 VENDOR_SECURITY_PATCH := 2024-02-01
@@ -117,6 +127,7 @@ DEVICE_RESOLUTION := 720x1650
 TARGET_SCREEN_HEIGHT := 1650
 TARGET_SCREEN_WIDTH := 720
 TW_WAIT_FOR_BOOT := true
+TW_EXCLUDE_DEFAULT_USB_INIT := true
 
 # Поддержка FBE-шифрования (Beanpod Keymaster)
 TW_INCLUDE_CRYPTO := true
