@@ -103,10 +103,10 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
 # Включение ADB при старте ядра
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.secure=0
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.allow.mock.location=0
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.debuggable=1
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.sys.usb.config=adb
+ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0
+ADDITIONAL_DEFAULT_PROPERTIES += ro.allow.mock.location=0
+ADDITIONAL_DEFAULT_PROPERTIES += ro.debuggable=1
+ADDITIONAL_DEFAULT_PROPERTIES += persist.sys.usb.config=adb
 
 # Совместимость со стоковой базой Android 11
 PLATFORM_SECURITY_PATCH := 2024-02-01
