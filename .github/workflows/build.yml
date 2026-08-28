@@ -1,4 +1,4 @@
-name: Build TWRP
+Name: Build TWRP
 
 on:
   push:
@@ -50,14 +50,23 @@ jobs:
           echo "=== Показываю скомпилированные файлы ==="
           ls -la workspace/out/target/product/frost/ || true
 
+      - name: Truncate boot.img to 96MB
+        run: |
+          BOOT_PATH="workspace/out/target/product/frost/boot.img"
+          if [ -f "$BOOT_PATH" ]; then
+            echo "Найден boot.img, увеличиваем до 96MB..."
+            ls -lh "$BOOT_PATH"
+            truncate -s 96M "$BOOT_PATH"
+            echo "Размер успешно изменён:"
+            ls -lh "$BOOT_PATH"
+          else
+            echo "Ошибка: boot.img не найден по пути $BOOT_PATH!"
+            exit 1
+          fi
+
       - name: Upload Recovery Image
         uses: actions/upload-artifact@v4
         with:
           name: TWRP-Poco-C40-boot
           path: workspace/out/target/product/frost/boot.img
           if-no-files-found: error
-
-      - name: Truncate boot.img to 96MB
-        run: |
-          truncate -s 96M out/target/product/frost/boot.img
-
