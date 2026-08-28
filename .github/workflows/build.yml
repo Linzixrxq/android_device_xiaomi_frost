@@ -1,4 +1,4 @@
-Name: Build TWRP
+name: Build TWRP
 
 on:
   push:
