@@ -1,139 +1,56 @@
-#
-# Copyright (C) 2023 The Android Open Source Project
-#
-# SPDX-License-Identifier: Apache-2.0
-#
-
 DEVICE_PATH := device/xiaomi/frost
 
-# Сборка с минимальным манифестом
-ALLOW_MISSING_DEPENDENCIES := true
-
-# A/B Разметка
-AB_OTA_UPDATER := true
-AB_OTA_PARTITIONS += \
-    system \
-    system_ext \
-    boot \
-    product \
-    vendor
-
-# Конфигурация Boot / Recovery (Poco C40 / frost / JR510)
-BOARD_USES_RECOVERY_AS_BOOT := true
-BOARD_BUILD_VENDOR_BOOT_IMAGE := false
-BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := false
-
-# Заголовок образа boot
-BOARD_BOOT_HEADER_VERSION := 2
-
-# Архитектура (ARM64 / Cortex-A55)
+# Архитектура и платформа (JLQ JR510 / ARM64)
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
-TARGET_CPU_ABI2 := 
-TARGET_CPU_VARIANT := generic
-TARGET_CPU_VARIANT_RUNTIME := cortex-a55
+TARGET_CPU_ABI2 :=
+TARGET_CPU_VARIANT := cortex-a55
 
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv7-a-neon
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
-TARGET_2ND_CPU_VARIANT := generic
-TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a55
+TARGET_2ND_CPU_VARIANT := cortex-a55
 
-TARGET_IS_64_BIT := true
-TARGET_SUPPORTS_32_BIT_APPS := true
-TARGET_SUPPORTS_64_BIT_APPS := true
-
-# Загрузчик и Платформа
-TARGET_BOOTLOADER_BOARD_NAME := frost
-TARGET_NO_BOOTLOADER := true
 TARGET_BOARD_PLATFORM := jr510
 
-# Дисплей и заголовок
-TARGET_SCREEN_DENSITY := 320
-BOARD_PAGE_SIZE := 2048
+# Boot Header v3 (Android 11)
+BOARD_BOOT_HEADER_VERSION := 3
+BOARD_PAGE_SIZE := 4096
 
-# Предкомпилированные Ядро и DTB
-BOARD_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
+# Предкомпилированное ядро и DTB
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
-# Смещения адресов памяти JLQ JR510
+# Смещения
 BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_RAMDISK_OFFSET := 0x01000000
 BOARD_KERNEL_TAGS_OFFSET := 0x00000000
 BOARD_DTB_OFFSET := 0x00000000
 
-# Командная строка ядра (КРИТИЧЕСКИ ВАЖНО ДЛЯ ВЫХОДА ИЗ BOOTLOOP)
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 androidboot.hardware=jlq androidboot.selinux=permissive loop.max_part=7
+# Командная строка ядра (Стоковая из vendor_boot)
+BOARD_KERNEL_CMDLINE := security=selinux androidboot.hardware=jlq iommu.strict=0 firmware_class.path=/etc/firmware swiotlb=2048 rcu_nocbs=0-7 kpti=off rcupdate.rcu_expedited=1 earlycon=uart8250,mmio32,0x3450F000 console=jlqttyS1,115200n8 no_console_suspend loglevel=4 buildvariant=user androidboot.selinux=permissive
 
-# Использование GZIP для рамдиска JLQ
-BOARD_RAMDISK_USE_LZ4 := false
-
+# Аргументы для mkbootimg
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
-BOARD_MKBOOTIMG_ARGS += --board ""
+BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_PAGE_SIZE)
 BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_PAGE_SIZE)
 
-BOARD_KERNEL_IMAGE_NAME := Image
-TARGET_FORCE_PREBUILT_KERNEL := true
-ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-endif
+# Динамические разделы и A/B
+BOARD_SUPER_PARTITION_GROUPS := jlq_dynamic_partitions
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
+BOARD_HAS_NO_SELECT_BUTTON := true
 
-# Размеры партиций
-BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 100663296
-BOARD_HAS_LARGE_FILESYSTEM := true
-BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
-BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-TARGET_COPY_OUT_VENDOR := vendor
-BOARD_SUPER_PARTITION_SIZE := 8589934592
-BOARD_SUPER_PARTITION_GROUPS := xiaomi_dynamic_partitions
-BOARD_XIAOMI_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor
-BOARD_XIAOMI_DYNAMIC_PARTITIONS_SIZE := 8585739264
-
-# Рекавери и файловые системы
-TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
-TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_USERIMAGES_USE_F2FS := true
-
-# Включение ADB при старте ядра
-ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0
-ADDITIONAL_DEFAULT_PROPERTIES += ro.allow.mock.location=0
-ADDITIONAL_DEFAULT_PROPERTIES += ro.debuggable=1
-ADDITIONAL_DEFAULT_PROPERTIES += persist.sys.usb.config=adb
-
-# Совместимость со стоковой базой Android 11
-PLATFORM_SECURITY_PATCH := 2024-02-01
-VENDOR_SECURITY_PATCH := 2024-02-01
-PLATFORM_VERSION := 11.0.0
-
-# Verified Boot (AVB)
-BOARD_AVB_ENABLE := false
-
-# Настройки интерфейса TWRP
+# Настройки TWRP
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
 TW_SCREEN_BLANK_ON_BOOT := true
-TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_USE_TOOLBOX := true
-TW_INCLUDE_REPACKTOOLS := true
-DEVICE_RESOLUTION := 720x1650
-TARGET_SCREEN_HEIGHT := 1650
-TARGET_SCREEN_WIDTH := 720
-TW_WAIT_FOR_BOOT := true
+INPUT_EVENT_LOGGING := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
-
-# Поддержка FBE-шифрования (Beanpod Keymaster)
 TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
-BOARD_USES_METADATA_PARTITION := true
-TW_USE_FSCRYPT_POLICY := 2
-
-# Fstab configuration
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/fstab.jlq
+TW_USE_TOOLBOX := true
