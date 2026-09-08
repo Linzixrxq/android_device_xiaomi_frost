@@ -35,14 +35,19 @@ jobs:
           mkdir -p workspace/device/xiaomi/frost
           rsync -av --exclude='workspace' --exclude='.git' --exclude='.github' ./ workspace/device/xiaomi/frost/
 
-      - name: Build TWRP (Boot Image / Recovery-as-Boot)
+      # GitHub Actions сам скачает ядро по твоей ссылке прямо в prebuilt
+      - name: Download Heavy Prebuilt Kernel from Catbox
+        run: |
+          mkdir -p workspace/device/xiaomi/frost/prebuilt
+          curl -L -o workspace/device/xiaomi/frost/prebuilt/kernel "https://files.catbox.moe/jkv0tg"
+
+      - name: Build TWRP (Boot Image)
         run: |
           export PATH=~/bin:$PATH
           cd workspace
           export ALLOW_MISSING_DEPENDENCIES=true
           source build/envsetup.sh
           lunch twrp_frost-eng
-          # Собираем правильный bootimage средствами самого компилятора Android
           mka bootimage -j$(nproc)
 
       - name: Check Built Images
