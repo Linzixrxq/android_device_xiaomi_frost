@@ -1,10 +1,8 @@
 name: Build TWRP
-
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -24,8 +22,7 @@ jobs:
           cd workspace
           git config --global user.name "Linzixrxq"
           git config --global user.email "builder@example.com"
-          # ВОТ ТЕПЕРЬ ТУТ ЧЁТКО СТОИТ ПОЛНАЯ ССЫЛКА НА МАНИФЕСТ:
-          repo init -u https://github.com -b twrp-12.1 --depth=1
+          repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 --depth=1
           repo sync -c -q --no-tags --no-clone-bundle -j$(nproc)
 
       - name: Copy Device Tree
@@ -33,11 +30,10 @@ jobs:
           mkdir -p workspace/device/xiaomi/frost
           rsync -av --exclude='workspace' --exclude='.git' --exclude='.github' ./ workspace/device/xiaomi/frost/
 
-      # Здесь тоже чётко стоит твоя прямая ссылка на ядро Catbox:
       - name: Download Heavy Prebuilt Kernel from Catbox
         run: |
           mkdir -p workspace/device/xiaomi/frost/prebuilt
-          curl -L -o workspace/device/xiaomi/frost/prebuilt/kernel "https://catbox.moe"
+          curl -L -o workspace/device/xiaomi/frost/prebuilt/kernel "https://files.catbox.moe/jkv0tg"
 
       - name: Build TWRP (Boot Image)
         run: |
