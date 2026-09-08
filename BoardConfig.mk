@@ -15,23 +15,30 @@ TARGET_2ND_CPU_VARIANT := cortex-a55
 
 TARGET_BOARD_PLATFORM := jr510
 
-# Boot Header v3 (Android 11)
-BOARD_BOOT_HEADER_VERSION := 3
-BOARD_PAGE_SIZE := 4096
+# Обязательные флаги структуры Recovery-in-Boot
+BOARD_USES_RECOVERY_AS_BOOT := true
+TARGET_NO_RECOVERY := true
+
+# Исправлено на Boot Header v2 (Чтобы упаковать Ramdisk TWRP прямо внутрь boot.img)
+BOARD_BOOT_HEADER_VERSION := 2
+BOARD_PAGE_SIZE := 2048
 
 # Предкомпилированное ядро и DTB
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
-# Смещения
+# Смещения (Скорректированы под Header v2)
 BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_RAMDISK_OFFSET := 0x01000000
 BOARD_KERNEL_TAGS_OFFSET := 0x00000000
 BOARD_DTB_OFFSET := 0x00000000
 
-# Командная строка ядра (Стоковая из vendor_boot)
+# Командная строка ядра
 BOARD_KERNEL_CMDLINE := security=selinux androidboot.hardware=jlq iommu.strict=0 firmware_class.path=/etc/firmware swiotlb=2048 rcu_nocbs=0-7 kpti=off rcupdate.rcu_expedited=1 earlycon=uart8250,mmio32,0x3450F000 console=jlqttyS1,115200n8 no_console_suspend loglevel=4 buildvariant=user androidboot.selinux=permissive
+
+# Формат сжатия ramdisk, который требует заводской загрузчик
+BOARD_RAMDISK_USE_LZ4 := true
 
 # Аргументы для mkbootimg
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
@@ -41,16 +48,19 @@ BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
 
-# Динамические разделы и A/B
+# Динамические разделы
 BOARD_SUPER_PARTITION_GROUPS := jlq_dynamic_partitions
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 BOARD_HAS_NO_SELECT_BUTTON := true
 
-# Настройки TWRP
+# Реальный максимальный размер раздела boot на Poco C40
+BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
+
+# Настройки TWRP (Временно отключена крипта для стабильности запуска на GSI)
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
 TW_SCREEN_BLANK_ON_BOOT := true
 INPUT_EVENT_LOGGING := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
-TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO := false
 TW_USE_TOOLBOX := true
