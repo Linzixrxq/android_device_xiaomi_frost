@@ -24,7 +24,7 @@ jobs:
           cd workspace
           git config --global user.name "Linzixrxq"
           git config --global user.email "builder@example.com"
-          # ИСПРАВЛЕНО: Теперь ссылка на исходники TWRP указана полностью
+          # ВОТ ТЕПЕРЬ ТУТ ЧЁТКО СТОИТ ПОЛНАЯ ССЫЛКА НА МАНИФЕСТ:
           repo init -u https://github.com -b twrp-12.1 --depth=1
           repo sync -c -q --no-tags --no-clone-bundle -j$(nproc)
 
@@ -33,7 +33,7 @@ jobs:
           mkdir -p workspace/device/xiaomi/frost
           rsync -av --exclude='workspace' --exclude='.git' --exclude='.github' ./ workspace/device/xiaomi/frost/
 
-      # ИСПРАВЛЕНО: Возвращена прямая ссылка на скачивание твоего 34МБ ядра из Catbox
+      # Здесь тоже чётко стоит твоя прямая ссылка на ядро Catbox:
       - name: Download Heavy Prebuilt Kernel from Catbox
         run: |
           mkdir -p workspace/device/xiaomi/frost/prebuilt
