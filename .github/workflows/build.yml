@@ -42,6 +42,12 @@ jobs:
           mkdir -p workspace/device/xiaomi/frost
           rsync -av --exclude='workspace' --exclude='.git' --exclude='.github' ./ workspace/device/xiaomi/frost/
 
+      - name: Download Kernel Modules
+        run: |
+          mkdir -p workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1
+          curl -L -o modules.zip "https://files.catbox.moe/ahqqzo.zip"
+          unzip modules.zip -d workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1/
+
       - name: Download Heavy Prebuilt Kernel from Catbox
         run: |
           mkdir -p workspace/device/xiaomi/frost/prebuilt
