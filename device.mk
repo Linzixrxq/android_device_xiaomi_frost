@@ -3,9 +3,9 @@ LOCAL_PATH := device/xiaomi/frost
 # Архитектура виртуального A/B и динамических разделов
 PRODUCT_VIRTUAL_AB_OTA := true
 
-# Копирование стокового fstab.jlq в путь, необходимый для TWRP
+# Копирование fstab (Исправлен путь для recovery-in-boot)
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/fstab.jlq:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/recovery.fstab
+    $(LOCAL_PATH)/fstab.jlq:recovery/root/system/etc/recovery.fstab
 
 # Настройки экрана и графического процессора Mali
 PRODUCT_PROPERTY_OVERRIDES += \
