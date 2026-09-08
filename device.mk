@@ -1,21 +1,16 @@
-LOCAL_PATH := $(call my-dir)
-
-# Добавляем ключи верификации GSI в ramdisk для совместимости с Android 13
+# Inherit from common AOSP config
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
-# Архитектура виртуального A/B и динамических разделов
-PRODUCT_VIRTUAL_AB_OTA := true
+# Dynamic partitions
+PRODUCT_SHIPPING_API_LEVEL := 30
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
-# Копирование fstab (Исправлен путь для recovery-in-boot)
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/fstab.jlq:recovery/root/system/etc/recovery.fstab
-
-# Настройки экрана и графического процессора Mali
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.sf.lcd_density=320 \
-    ro.hardware.egl=mali \
-    ro.hardware.vulkan=pastel
-
-# Дополнительные пакеты рекавери
+# Boot control HAL для A/B
 PRODUCT_PACKAGES += \
-    qcom_dec_health
+    android.hardware.boot@1.1-impl-bootloader \
+    android.hardware.boot@1.1-service
+
+# Копирование vendor-модулей ядра
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.ko,$(DEVICE_PATH)/recovery/root/vendor/lib/modules/1.1,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/1.1)
