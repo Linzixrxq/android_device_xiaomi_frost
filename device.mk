@@ -1,4 +1,7 @@
-LOCAL_PATH := device/xiaomi/frost
+LOCAL_PATH := $(call my-dir)
+
+# Добавляем ключи верификации GSI в ramdisk для совместимости с Android 13
+$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
 # Архитектура виртуального A/B и динамических разделов
 PRODUCT_VIRTUAL_AB_OTA := true
