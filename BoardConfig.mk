@@ -66,3 +66,6 @@ TW_INCLUDE_CRYPTO := false
 
 # Фикс для сборки
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
+
+# ПОДКЛЮЧЕНИЕ СИСТЕМНЫХ СВОЙСТВ (Включает отладку и свободный ADB)
+TARGET_SYSTEM_PROP := $(DEVICE_PATH)/system.prop
