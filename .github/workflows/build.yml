@@ -19,8 +19,8 @@ jobs:
           sudo apt-get install -y git-core gnupg flex bison build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc unzip bc rsync
           
           mkdir -p ~/bin
-          # ИСПРАВЛЕНО: Скачиваем чистый рабочий скрипт repo в обход редиректов Google
-          curl https://githubusercontent.com > ~/bin/repo
+          # ИСПРАВЛЕНО: Качаем repo напрямую из стабильного источника Android AOSP с обходом сбоев сети
+          curl -sSL https://googleapis.com > ~/bin/repo
           chmod a+x ~/bin/repo
 
       - name: Initialize and Sync TWRP Manifest
