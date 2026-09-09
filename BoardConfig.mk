@@ -18,12 +18,11 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
 
-# A/B & Recovery Flags
+# A/B & Recovery Flags (Virtual A/B)
 TARGET_NO_RECOVERY := true
 BOARD_USES_RECOVERY_AS_BOOT := true
 AB_OTA_UPDATER := true
 
-# Список разделов A/B (критично для устранения ошибки сборки)
 AB_OTA_PARTITIONS += \
     boot \
     system \
@@ -40,9 +39,13 @@ BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_PAGE_SIZE)
 
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-BOARD_RAMDISK_USE_LZ4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296
 BOARD_AVB_ENABLE := true
+
+# Принудительное сжатие Ramdisk для укладывания в 96 MiB
+BOARD_RAMDISK_USE_LZ4 := true
+LZ4 := lz4
+BOARD_RAMDISK_OPTION := --format=lz4
 
 # Storage & Metadata
 TARGET_USERIMAGES_USE_F2FS := true
@@ -50,7 +53,7 @@ BOARD_USES_METADATA_PARTITION := true
 TARGET_COPY_OUT_VENDOR := vendor
 BOARD_ROOT_EXTRA_FOLDERS := cust
 
-# UI & Display (Параметры Poco C40)
+# UI & Display (Poco C40)
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_SCREEN_DENSITY := 320
 TW_THEME := portrait_hdpi
@@ -68,7 +71,7 @@ TW_NO_HAPTICS := true
 TW_EXCLUDE_APEX := true
 TW_INCLUDE_CRYPTO := false
 
-# Загрузка модулей тачскрина/дисплея (исправленный wildcard вместо вызова ls)
+# Безопасная загрузка модулей через wildcard
 TW_LOAD_VENDOR_MODULES := $(wildcard $(DEVICE_PATH)/recovery/root/vendor/lib/modules/1.1/*.ko)
 TW_LOAD_VENDOR_BOOT_MODULES := true
 
