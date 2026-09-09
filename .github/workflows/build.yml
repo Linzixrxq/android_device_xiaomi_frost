@@ -44,14 +44,8 @@ jobs:
       - name: Download Kernel Modules
         run: |
           mkdir -p workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1
-          curl -L -o modules.zip "https://files.catbox.moe/ahqqzo.zip"
+          curl -L -o modules.zip "https://files.catbox.moe/ui5fu5.zip"
           unzip modules.zip -d workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1/
-          
-          # Удаление всех тяжелых ненужных подсистем (звук, радио, wi-fi, bluetooth, камера, gpu, drm, net)
-          cd workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1/
-          rm -f snd*.ko wl*.ko wlan*.ko radio*.ko camera*.ko bt*.ko
-          rm -f mali*.ko video*.ko media*.ko gnss*.ko sensor*.ko
-          rm -f net*.ko crypto*.ko trusty*.ko
 
       - name: Download Heavy Prebuilt Kernel from Catbox
         run: |
