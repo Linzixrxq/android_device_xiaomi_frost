@@ -47,13 +47,11 @@ jobs:
           curl -L -o modules.zip "https://files.catbox.moe/ahqqzo.zip"
           unzip modules.zip -d workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1/
           
-          # Очистка некритичных модулей для умещения в boot-раздел (96 MiB)
-          rm -f workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1/snd*.ko
-          rm -f workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1/wl*.ko
-          rm -f workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1/wlan*.ko
-          rm -f workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1/radio*.ko
-          rm -f workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1/camera*.ko
-          rm -f workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1/bt*.ko
+          # Удаление всех тяжелых ненужных подсистем (звук, радио, wi-fi, bluetooth, камера, gpu, drm, net)
+          cd workspace/device/xiaomi/frost/recovery/root/vendor/lib/modules/1.1/
+          rm -f snd*.ko wl*.ko wlan*.ko radio*.ko camera*.ko bt*.ko
+          rm -f mali*.ko video*.ko media*.ko gnss*.ko sensor*.ko
+          rm -f net*.ko crypto*.ko trusty*.ko
 
       - name: Download Heavy Prebuilt Kernel from Catbox
         run: |
