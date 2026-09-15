@@ -5,11 +5,11 @@ This branch twrp-11 has ***encrypt/decrypt*** files and option to more test with
 [![GPLv3+](https://img.shields.io/badge/license-GPLv3+-red.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 
 ### Firmware version:
-frost_ru_global_images_V13.0.13.0.RGFRUXM_20230607.0000.00_11.0_global_cfb9525cc9.tgz
+frost_ru_global_images_V13.0.17.0.RGFRUXM_20230607.0000.00_11.0_global_cfb9525cc9.tgz
 
 ```ruby
 device=frost
-build_number=V13.0.13.0.RGFRUXM
+build_number=V13.0.17.0.RGFRUXM
 userdata_version=20230607.0000.00
 ```
 
@@ -49,7 +49,7 @@ Resolution | 720 x 1650 pixels (~268 ppi density)
 <details><summary>TWRP Pictures - Click to open</summary>
 <p>
 
-![Menu](https://github.com/lopestom/twrp_)
+![Menu](https://github.com/Linzixrxq/twrp_)
 </p>
 </details>
 
