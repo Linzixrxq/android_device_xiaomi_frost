@@ -1,4 +1,4 @@
-Name: Building TWRP
+name: Building TWRP
 
 on:
   workflow_dispatch:
