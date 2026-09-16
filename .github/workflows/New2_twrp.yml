@@ -57,11 +57,8 @@ jobs:
         rm -rf .repo
 
     - name: Checkout Device Tree
-      uses: actions/checkout@v4
-      with:
-        repository: Linzixrxq/android_device_xiaomi_frost
-        ref: twrp-11
-        path: twrp/device/xiaomi/frost
+      run: |
+        git clone https://github.com/Linzixrxq/android_device_xiaomi_frost twrp/device/xiaomi/frost
 
     - name: Set Swap Space
       uses: pierotofy/set-swap-space@master
