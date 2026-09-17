@@ -30,7 +30,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt -y upgrade
-        sudo apt -y install gperf gcc-multilib gcc-10-multilib g++-multilib g++-10-multilib libc6-dev lib32ncurses5-dev x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libwxgtk3.0-gtk3-dev libxml2 lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev libncurses5 python3
+        sudo apt -y install gperf gcc-multilib g++-multilib libc6-dev x11proto-core-dev libx11-dev tree lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc bc ccache liblz4-tool libncurses-dev libsdl1.2-dev libxml2 lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev python3
         git config --global user.name "Linzixrxq"
         git config --global user.email "action@github.com"
 
@@ -57,11 +57,8 @@ jobs:
         rm -rf .repo
 
     - name: Checkout Device Tree
-      uses: actions/checkout@v4
-      with:
-        repository: Linzixrxq/android_device_xiaomi_frost
-        ref: twrp-11
-        path: twrp/device/xiaomi/frost
+      run: |
+        git clone https://github.com/Linzixrxq/android_device_xiaomi_frost twrp/device/xiaomi/frost
 
     - name: Set Swap Space
       uses: pierotofy/set-swap-space@master
